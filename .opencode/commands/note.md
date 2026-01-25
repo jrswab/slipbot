@@ -3,17 +3,27 @@ description: Capture a note
 agent: build
 ---
 
-- Note to capture: $1
-- Content Type: $2
-- Source: $3
+- Note: $1
+- Source: $2
 
 # 1. Capture
 
 **Purpose**: Accept an input and create a well-formed note file.
 
 **Behavior**:
-- Accepts raw text input
-- Auto-detect content type unless provided. (eg., thought, quote, idea, journal, meeting, reference)
+- Accept raw text input
+- Content type details:
+   - content type can be: note, quote, idea, or journal
+   - Default note type is note.
+   - if note starts with `>` use quote.
+   - if note starts with `!` use idea.
+   - if note starts with `*` use journal.
+- If `Source` is provided:
+   1. First check for notes with the same source title (case insensitive).
+   2. If there is not an existing note in the graph with a matching (case insensitive) title then check Google Books API:
+      - `https://www.googleapis.com/books/v1/volumes?q=source+title+provided`
+       - If Google Books does not have an exact (case insensitive) match on the title.
+          - Use the provided `Source` for source title.
 - Generate appropriate filename and frontmatter
 - Asks minimal questions only when essential (e.g., source for quotes)
 - Create the markdown file immediately
@@ -28,7 +38,10 @@ title: "Knowledge Graph Design Thoughts"
 date: 2026-01-25T14:30:22
 type: idea
 tags: [systems, notes, automation]
-source: null
+source:
+  title: "The Battle For The Biblical Family"
+  type: "book"
+  author: "George C. Scipione"
 links:
   - id: "20260120-093045-compound-interest"
     type: related
