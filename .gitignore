@@ -4,6 +4,8 @@
 
 ## Only allow the following.
 !.gitignore
-!.opencode/commands/*
+!.opencode
+!.opencode/commands
+!.opencode/commands/note.md
 !README.md
 !LICENSE
