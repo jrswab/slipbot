@@ -1,5 +1,7 @@
 # Slipbot
 
+![note-taking-with-moltbot](slipbot.png)
+
 **Agentic note-taking optimized for MoltBot.** Designed to make note capture frictionless for humans while your AI assistant handles organization, linking, and knowledge graph maintenance.
 
 ## What is Slipbot?
