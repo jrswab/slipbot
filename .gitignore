@@ -4,8 +4,12 @@
 
 ## Only allow the following.
 !.gitignore
-!.opencode
-!.opencode/commands
-!.opencode/commands/note.md
 !README.md
+!CHANGES.md
 !LICENSE
+!skill/
+!skill/**
+!examples/
+!examples/**
+!docs/
+!docs/**
