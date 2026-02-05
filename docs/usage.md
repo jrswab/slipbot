@@ -7,30 +7,24 @@ This guide covers common workflows and queries for using Slipbot with your AI as
 ### Basic Note
 
 ```
-note: The Pomodoro Technique uses 25-minute focused work intervals followed by 5-minute breaks.
+- The Pomodoro Technique uses 25-minute focused work intervals followed by 5-minute breaks.
 ```
 
 Your AI will:
 - Create a note file with timestamp
-- Tag it with relevant objects (Pomodoro-technique, time-management, focus)
+- Tag it with relevant concepts (Pomodoro-technique, focus)
 - Link to related notes if any exist
 - Update the knowledge graph
 
 ### Quote with Source
 
 ```
-quote: "The only way to do great work is to love what you do." - Steve Jobs, Stanford Commencement 2005
-```
-
-Or use the `>` prefix:
-
-```
-> The only way to do great work is to love what you do. - Steve Jobs
+> The only way to do great work is to love what you do. ~ speech, Stanford Commencement 2005 by Steve Jobs
 ```
 
 ### Ideas
 
-Prefix with `!` or use explicit marking:
+Prefix with `!`:
 
 ```
 ! What if we used event sourcing for the file processing pipeline?
@@ -42,18 +36,6 @@ Prefix with `*`:
 
 ```
 * Today I realized that the bottleneck in our Excel ingestion was database operations in the hot path.
-```
-
-### Natural Capture
-
-Just tell your AI naturally:
-
-```
-Remember this: Cal Newport's Deep Work concept pairs well with the Pomodoro Technique.
-```
-
-```
-I want to save this thought: The best abstractions are discovered, not designed upfront.
 ```
 
 ## Querying Your Knowledge Graph
@@ -165,10 +147,10 @@ When exploring a topic:
 
 ### Project Notes
 
-Tag project-specific notes:
+Capture project-specific notes:
 
 ```
-note: Lambda migration eliminated 10,000+ Sentry errors - tags: [Lambda, serverless, data-platform, Gloo]
+- Lambda migration eliminated 10,000+ Sentry errors
 ```
 
 Later:
@@ -181,11 +163,11 @@ Show me all notes about the Lambda migration
 As you read:
 
 ```
-quote: "Your limitation—it's only your imagination." - Source: Zero to One, Peter Thiel
+> Your limitation—it's only your imagination. ~ book, Zero to One by Peter Thiel
 ```
 
 ```
-note: Thiel argues that competition is for losers—monopolies drive innovation. - Source: Zero to One
+- Thiel argues that competition is for losers—monopolies drive innovation. ~ book, Zero to One by Peter Thiel
 ```
 
 Then:
@@ -223,11 +205,12 @@ See notes:
 
 ### Note Not Created
 
-Check that you used a recognized pattern:
-- `note: ...`
-- `quote: ...`
-- Prefix with `>`, `!`, or `*`
-- Or tell your AI explicitly to remember something
+Check that you used a recognized prefix:
+- `>` for quotes
+- `!` for ideas
+- `*` for journal entries
+- `-` for notes
+- Use `~` to add source attribution (e.g., `> Quote text ~ book, Title by Author`)
 
 ### Links Not Working
 
