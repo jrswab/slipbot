@@ -15,10 +15,10 @@ Agent's job: **Organize, link, and maintain.**
 
 The workflow is simple:
 
-1. Share a thought with your AI assistant naturally or explicitly:
-   - "note: Research idea about spaced repetition"
-   - "remember this: The best time to plant a tree was 20 years ago"
-   - "quote: Your limitation—it's only your imagination."
+1. Share a thought with your AI assistant using simple prefixes:
+   - `- Research idea about spaced repetition`
+   - `> The best time to plant a tree was 20 years ago ~ proverb, Chinese Proverb`
+   - `! What if we built a knowledge graph that maintains itself?`
    
 2. Your AI processes and organizes the note automatically
 
@@ -55,24 +55,13 @@ No configuration needed. Just start capturing notes.
 ### Basic Note Capture
 
 ```
-note: Research idea: explore the relationship between retrieval practice and spaced repetition
+- Research idea: explore the relationship between retrieval practice and spaced repetition
 ```
 
 ### Capture Quotes
 
 ```
-quote: The best time to plant a tree was 20 years ago. The second best time is now.
-```
-
-Prefix with `>` for automatic quote detection:
-```
-> The best time to plant a tree was 20 years ago. The second best time is now.
-```
-
-### Quick Thoughts
-
-```
-remember this: Need to investigate why the cache invalidation is slow on production
+> The best time to plant a tree was 20 years ago. The second best time is now. ~ proverb, Chinese Proverb
 ```
 
 ### Ideas
@@ -91,8 +80,10 @@ Prefix with `*` for automatic journal entry detection:
 
 ### With Source Attribution
 
+Use `~` to add source information:
+
 ```
-quote: "All models are wrong, but some are useful" - Source: George Box, Statistics
+> All models are wrong, but some are useful. ~ article, Robustness in Statistics by George Box
 ```
 
 Your AI will check existing notes first, then use the provided source information.
