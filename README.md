@@ -1,12 +1,14 @@
 # Slipbot
 
-![note-taking-with-moltbot](slipbot.png)
+![slipbot](slipbot.png)
 
-**Agentic note-taking optimized for MoltBot.** Designed to make note capture frictionless for humans while your AI assistant handles organization, linking, and knowledge graph maintenance.
+**Agentic Zettelkasten skill definitions for AI Agents.** Captures notes, quotes, ideas, and journals via prefix syntax. AI handles YAML frontmatter generation, object-based tagging, bidirectional linking with typed connections, and JSON knowledge graph maintenance. Includes importers for Kindle, Instapaper, and Logseq.
 
 ## What is Slipbot?
 
-Slipbot is an agentic knowledge management system built for MoltBot and Clawdbot that eliminates the overhead of maintaining a personal knowledge graph. Instead of worrying about organization, tags, categories, or where things go, you just capture your thoughts naturally and let your AI agent handle everything else.
+Slipbot is a set of skill definitions that turn any compatible AI agent into an automated [Zettelkasten](https://en.wikipedia.org/wiki/Zettelkasten) (slip-box) manager. It eliminates the overhead of maintaining a personal knowledge graph -- instead of worrying about organization, tags, or where notes go, you capture thoughts naturally and let your AI agent handle everything else.
+
+The `skills/` directory contains structured SKILL.md files that teach your AI assistant how to capture, organize, link, and maintain notes. Any AI agent that can read markdown skill definitions and perform file operations can use Slipbot.
 
 Your job: **Think and capture.**  
 Agent's job: **Organize, link, and maintain.**
@@ -16,39 +18,40 @@ Agent's job: **Organize, link, and maintain.**
 The workflow is simple:
 
 1. Share a thought with your AI assistant using simple prefixes:
-   - `- Research idea about spaced repetition`
-   - `> The best time to plant a tree was 20 years ago ~ proverb, Chinese Proverb`
-   - `! What if we built a knowledge graph that maintains itself?`
-   
+   - `-` for notes: `- Research idea about spaced repetition`
+   - `>` for quotes: `> The best time to plant a tree was 20 years ago ~ proverb, Chinese Proverb`
+   - `!` for ideas: `! What if we built a knowledge graph that maintains itself?`
+   - `*` for journal entries: `* Today's stand-up went really well`
+   - `~` for source attribution: `- Content here ~ book, Title by Author`
+
 2. Your AI processes and organizes the note automatically
 
 3. Your second brain grows without manual maintenance
 
 That's it. No folders to organize, no tags to remember, no systems to maintain.
 
-## Installation
+## Quick Start
 
 ### Requirements
 
-- A MoltBot or Clawdbot installation
-- Syncthing configured (for file sync between devices)
+- Any AI agent/assistant that supports loading skill definitions from markdown files and can read/write local files
+- (Optional) [Syncthing](https://syncthing.net/) for multi-device file sync
 
 ### Setup
 
-1. Clone this repository into your sync folder
-2. Your AI assistant will recognize note capture patterns automatically
-3. Notes are stored in `sync/slipbox/` with automatic organization
-
-### For MoltBot/Clawdbot Users
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/jrswab/slipbot.git
+   ```
+2. Point your AI agent at the `skills/` directory so it loads the SKILL.md files
+3. Start capturing notes using the prefix syntax below
 
 Your AI assistant will:
 - Automatically recognize when you're capturing a note
-- Create properly formatted markdown files
-- Link related notes in your knowledge graph
-- Maintain the graph index for fast queries
-- Handle tagging based on content
-
-No configuration needed. Just start capturing notes.
+- Create properly formatted markdown files in `slipbox/`
+- Generate object-based tags from your content
+- Link related notes with bidirectional connections
+- Maintain the JSON knowledge graph index for fast queries
 
 ## Usage
 
@@ -88,6 +91,34 @@ Use `~` to add source information:
 
 Your AI will check existing notes first, then use the provided source information.
 
+## Importers
+
+Slipbot includes skill definitions for importing notes from external sources. Each importer parses the source format, shows a summary for confirmation, and then feeds each note through the standard Slipbot workflow (tagging, linking, graph update).
+
+### Kindle Importer
+
+Imports your reading notes from Kindle HTML/XHTML notebook exports. Extracts the book title and author automatically. Only imports your **Notes** (personal annotations) -- highlights of the book text are skipped.
+
+```
+- Applications should not allow unsigned JWTs ~ book, The JWT Handbook by Sebastian E Peyrott
+```
+
+### Instapaper Importer
+
+Imports your notes from Instapaper highlight exports. Parses the article title and URL from the header. Only imports your **own notes** (plain text lines) -- original article highlights (`>` lines) are skipped.
+
+```
+- To learn faster we need faster feedback loops ~ article, How to Learn Faster
+```
+
+### Logseq Importer
+
+Imports notes from Logseq pages with `key:: value` properties. Each bullet becomes an individual slipbox note. Nested bullets are flattened with parent context to remain standalone. All Logseq tags are stripped -- Slipbot generates its own tags based on content.
+
+```
+- Rewriting ideas helps decide their importance ~ Book, Digital Zettelkasten by David Kadavy
+```
+
 ## Querying Your Knowledge Graph
 
 Ask your AI assistant naturally:
@@ -96,16 +127,45 @@ Ask your AI assistant naturally:
 - "What notes link to the Lambda migration idea?"
 - "What have I written about performance optimization?"
 
-## File Structure
+The AI searches the graph index first for speed, then falls back to file search if needed. See [docs/usage.md](docs/usage.md) for the full querying guide, including search by source, exploring connections, and discovery queries.
+
+## Repository Structure
 
 ```
-sync/
-├── slipbox/
-│   ├── 20260131-041700-note-title.md
-│   ├── 20260131-042000-another-note.md
-│   └── .graph/
-│       └── graph.json              # Knowledge graph index
+slipbot/
+├── skills/
+│   ├── slipbot/
+│   │   └── SKILL.md                # Core note capture & management
+│   ├── kindle-importer/
+│   │   └── SKILL.md                # Kindle HTML export importer
+│   ├── instapaper-importer/
+│   │   └── SKILL.md                # Instapaper export importer
+│   └── logseq-importer/
+│       └── SKILL.md                # Logseq page importer
+├── docs/
+│   └── usage.md                    # Extended usage guide
+├── README.md
+└── LICENSE
 ```
+
+## Note Storage (User Data)
+
+Notes are stored in a `slipbox/` directory relative to where your agent operates:
+
+```
+slipbox/
+├── 20260131-041700-note-title.md
+├── 20260131-042000-another-note.md
+├── missing.md                       # Tracks broken link references
+└── .graph/
+    └── graph.json                   # Knowledge graph index
+```
+
+## Knowledge Graph
+
+Slipbot maintains a JSON knowledge graph at `slipbox/.graph/graph.json` that indexes all notes for fast querying. Each entry stores the note's title, type, source, tags, and links.
+
+The graph is automatically updated on every note capture. If the graph becomes corrupted, your AI agent can rebuild it from the note files. Broken links are detected during validation and tracked in `slipbox/missing.md` for cleanup.
 
 ## Note Format
 
@@ -130,16 +190,10 @@ links:
 Note contents here in markdown...
 ```
 
-## Why Slipbot?
-
-Traditional second brain systems fail because of maintenance overhead:
-
-- Deciding where notes go
-- Creating and maintaining taxonomies
-- Linking related notes manually
-- Keeping everything organized
-
-Slipbot removes all of that. Your only job is to get thoughts out of your head. Your AI does the rest.
+- **Filenames** use the format `YYYYMMDD-HHMMSS-slug.md` (e.g., `20260131-143022-compound-interest.md`)
+- **Titles** are generated by the AI: descriptive, 3-8 words, avoiding generic labels
+- **Source** is set to `null` when no source is provided via `~`
+- **Types**: `note`, `quote`, `idea`, `journal`
 
 ## How Linking Works
 
@@ -151,23 +205,38 @@ Your AI assistant automatically:
   - **contradicts**: Opposing viewpoint or information
   - **references**: Mentions same person, book, concept
   - **supports**: Provides evidence for another note
-- Updates frontmatter with bidirectional links (minimum 0.75 confidence)
+- Updates frontmatter with bidirectional links, including a `reason` for each connection
+- Validates links and tracks broken references in `slipbox/missing.md`
+
+Quality over quantity -- links are only created when notes are genuinely related.
 
 ## Tagging Philosophy
 
 Slipbot uses object-based tagging:
+- **2-3 tags per note** -- enough for connections, not so many they lose meaning
 - Tags are specific objects or concepts found in the note
 - Not broad categories like "productivity" or "ideas"
-- Object-based tags create precise connections
 - Focus on nouns: specific people, tools, techniques, systems
+- Consistency is enforced by checking existing tags before creating new ones
 
 **Example:**
-- ❌ Broad: `[productivity, work, improvement]`
-- ✅ Specific: `[pomodoro-technique, deep-work, Cal-Newport]`
+- Bad: `[productivity, work, improvement]`
+- Good: `[pomodoro-technique, deep-work, Cal-Newport]`
+
+## Why Slipbot?
+
+Traditional second brain systems fail because of maintenance overhead:
+
+- Deciding where notes go
+- Creating and maintaining taxonomies
+- Linking related notes manually
+- Keeping everything organized
+
+Slipbot removes all of that. Your only job is to get thoughts out of your head. Your AI does the rest.
 
 ## Status
 
-Slipbot is actively maintained. It's functional and useful for daily note capture with AI assistants.
+Slipbot is actively maintained.
 
 ## Contributing
 
